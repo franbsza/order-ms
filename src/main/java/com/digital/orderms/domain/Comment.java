@@ -7,17 +7,19 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.ZonedDateTime;
+import javax.persistence.ManyToOne;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "slots")
-public class Slot {
+@Entity(name = "comments")
+public class Comment {
 
     @Id
     private String id;
-    private String period;
-    private ZonedDateTime dateTime;
+    private String message;
+    private String userId;
+    @ManyToOne
+    private Order order;
 }

@@ -7,17 +7,18 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.ZonedDateTime;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "slots")
-public class Slot {
+@Entity(name = "services")
+public class Service {
 
     @Id
     private String id;
-    private String period;
-    private ZonedDateTime dateTime;
+    private String name;
+    private String type;
+    private String description;
+    private String price;
 }
