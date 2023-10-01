@@ -5,22 +5,33 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "address")
+@Entity
+@Table(name = "address")
 public class Address {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+
     private String street;
+
     private String number;
+
     private String neighborhood;
+
     private String city;
+
     private String state;
+
     private String zipCode;
+
+    @ManyToOne
+    private BaseAddress baseAddress;
 }

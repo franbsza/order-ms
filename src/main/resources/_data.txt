@@ -1,0 +1,24 @@
+INSERT INTO base_addresses (id, region) VALUES (1, 'Centro');
+INSERT INTO base_addresses (id, region) VALUES (2, 'Zona Oeste');
+
+--
+INSERT INTO address (id, street, number, neighborhood, city, state, zip_code, base_address_id)
+VALUES (1, 'Rua das Acácias', '940', 'Centro', 'Rio de Janeiro', 'RJ', '2345678', 1);
+INSERT INTO address (id, street, number, neighborhood, city, state, zip_code, base_address_id)
+VALUES (2, 'Av Decaminada', '10000', 'Barra da Tijuca', 'Rio de Janeiro', 'RJ', '2345678', 2);
+--
+
+INSERT INTO customers (id, user_id, email, name, phone, status, address_id)
+VALUES (1, 'cellyfbs', 'g2m6C@example.com', 'Celly', '11999999999', 'ACTIVE', 1);
+
+--
+
+INSERT INTO vehicles
+(id, is_active, brand, model, vehicle_year, plate_number, color, renavam, is_protected, customer_id)
+VALUES
+(1, true, 'Fiat', 'Uno', '2020', 'XXXXX','Preto','YR4-TYY', true, 1);
+INSERT INTO vehicles
+(id, is_active, brand, model, vehicle_year, plate_number, color, renavam, is_protected, customer_id)
+VALUES
+(2, true, 'Voyage', 'Volkswagen', '2017', 'ZZZZZ','Preto','WWW-34FR', true, 1);
+

@@ -8,15 +8,14 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "experts_technician")
+public class ExpertTechnician {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,11 +23,7 @@ public class Customer {
     private Long id;
 
     @NotNull
-    private String userId;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private CustomerStatus status;
+    private Boolean isActive;
 
     @NotNull
     private String name;
@@ -38,12 +33,12 @@ public class Customer {
     private String email;
 
     @NotNull
-    private String phone;
+    @OneToOne
+    private Address personalAddress;
 
     @NotNull
-    @OneToOne
-    private Address address;
+    private String phone;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY , cascade=CascadeType.ALL)
-    private List<Vehicle> vehicles;
+    @OneToOne
+    private BaseAddress baseAddress;
 }

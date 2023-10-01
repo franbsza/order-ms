@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.ZonedDateTime;
+import java.util.List;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "slot")
-public class Slot {
+@Table(name = "base_addresses")
+public class BaseAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,9 +23,8 @@ public class Slot {
     private String id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private Period period;
+    private String region;
 
-    @NotNull
-    private ZonedDateTime dateTime;
+    @OneToMany(mappedBy = "baseAddress", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Address> addresses;
 }
