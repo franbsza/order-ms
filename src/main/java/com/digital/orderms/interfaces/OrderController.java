@@ -1,6 +1,6 @@
 package com.digital.orderms.interfaces;
 
-import com.digital.orderms.application.order.OrderService;
+import com.digital.orderms.usecase.order.OrderService;
 import com.digital.orderms.dto.OrderRequest;
 import com.digital.orderms.dto.OrderResponse;
 import io.swagger.v3.oas.annotations.Operation;

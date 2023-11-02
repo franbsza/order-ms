@@ -1,6 +1,7 @@
 package com.digital.orderms.dto;
 
 import com.digital.orderms.domain.*;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class OrderRequest {
 
-    private OrderStatus orderStatus = OrderStatus.OPEN;
+    @Hidden
+    private OrderStatus orderStatus;
 
     private String description;
 

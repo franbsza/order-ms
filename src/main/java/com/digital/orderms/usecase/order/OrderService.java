@@ -1,7 +1,6 @@
-package com.digital.orderms.application.order;
+package com.digital.orderms.usecase.order;
 
 import com.digital.orderms.domain.Order;
-import com.digital.orderms.domain.OrderStatus;
 import com.digital.orderms.domain.Vehicle;
 import com.digital.orderms.dto.OrderRequest;
 import com.digital.orderms.dto.OrderResponse;
@@ -27,8 +26,6 @@ public class OrderService {
         if(Boolean.FALSE.equals(vehicle.getIsProtected())){
             throw new IllegalArgumentException("Vehicle is not protected");
         }
-
-        orderRequest.setOrderStatus(OrderStatus.OPEN);
         Order order = mapper.mappingOrderRequestToOrder(orderRequest);
 
         return mapper.mappingOrderToOrderResponse(orderRepository.save(order));

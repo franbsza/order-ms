@@ -20,7 +20,7 @@ public class Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private String id;
+    private Long id;
 
     @NotNull
     @Enumerated(EnumType.STRING)

@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -31,30 +34,34 @@ public class Order {
     @Type(type="text")
     private String description;
 
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.ALL)
-    @JoinColumn(name = "slot_id", referencedColumnName = "id")
+    @JoinColumn(name = "slot_id", referencedColumnName = "id", nullable = false)
     private Slot slot;
 
-    @NotNull
-    @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.ALL)
-    @JoinColumn(name = "service_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.MERGE)
+    @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = false)
     private Service service;
 
-    @NotNull
-    @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.MERGE)
+    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
 
     @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.ALL)
     @JoinColumn(name = "expert_technician_id", referencedColumnName = "id")
     private ExpertTechnician expertTechnician;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY ,cascade=CascadeType.ALL)
-    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY ,cascade=CascadeType.MERGE)
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
+
+    @CreationTimestamp
+    @Column(name = "created_at", columnDefinition = "DATETIME", nullable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at", columnDefinition = "DATETIME", nullable = false)
+    private LocalDateTime updatedAt;
 }
