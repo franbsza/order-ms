@@ -1,6 +1,7 @@
-package com.digital.orderms.dto;
+package com.digital.orderms.usecase.order.dto;
 
-import com.digital.orderms.domain.*;
+import com.digital.orderms.domain.OrderStatus;
+import com.digital.orderms.domain.Period;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,8 +17,7 @@ import java.time.ZonedDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderRequest {
-
+public class OrderCreateRequest {
     @Hidden
     private OrderStatus orderStatus;
 

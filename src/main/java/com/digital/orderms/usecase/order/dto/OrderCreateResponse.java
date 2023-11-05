@@ -1,25 +1,21 @@
-package com.digital.orderms.dto;
+package com.digital.orderms.usecase.order.dto;
 
+import com.digital.orderms.domain.OrderStatus;
 import com.digital.orderms.domain.Period;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SlotDto {
+public class OrderCreateResponse {
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
+    private Long id;
+    private OrderStatus orderStatus;
     private Period period;
-
-    @NotNull
     private ZonedDateTime dateTime;
 }
