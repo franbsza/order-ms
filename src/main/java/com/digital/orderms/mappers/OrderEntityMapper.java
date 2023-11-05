@@ -14,6 +14,8 @@ public interface OrderEntityMapper {
     @Mapping(target = "address.id", source = "addressId")
     @Mapping(target = "vehicle.id", source = "vehicleId")
     @Mapping(target = "orderStatus", source = "orderRequest.orderStatus", qualifiedByName = "setOrderStatus")
+    @Mapping(target= "slot.period", source = "period")
+    @Mapping(target = "slot.dateTime", source = "dateTime")
     Order mappingOrderRequestToOrder(OrderRequest orderRequest);
 
     OrderResponse mappingOrderToOrderResponse(Order order);
