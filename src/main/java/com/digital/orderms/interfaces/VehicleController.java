@@ -6,6 +6,7 @@ import com.digital.orderms.usecase.vehicle.dto.VehicleListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,12 +16,14 @@ public class VehicleController {
 
     private final VehicleService service;
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     @GetMapping
     public ResponseEntity<VehicleListResponse> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                        @RequestParam(value = "per_page", required = false, defaultValue = "10") Integer size){
         return ResponseEntity.ok(service.findAll(page, size));
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<VehicleDto> findById(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));

@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +23,7 @@ public class OrderController {
 
     private final OrderService service;
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     @Operation(summary = "Create a new order")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "The order was created",
@@ -35,12 +37,14 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(order));
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     @GetMapping
     public ResponseEntity<OrderListResponse> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                      @RequestParam(value = "per_page", required = false, defaultValue = "10") Integer size){
         return ResponseEntity.ok(service.findAll(page, size));
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> findById(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
