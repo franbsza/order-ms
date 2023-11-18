@@ -1,5 +1,6 @@
 package com.digital.orderms.domain;
 
+import com.digital.orderms.utils.TokenUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "orders")
+@EntityListeners(AuditingEntityListener.class)
 public class Order {
 
     @Id
@@ -57,6 +61,10 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
+    @CreatedBy
+    @Column(name = "email", updatable = false, nullable = false)
+    private String email;
+
     @CreationTimestamp
     @Column(name = "created_at", columnDefinition = "DATETIME", nullable = false)
     private LocalDateTime createdAt;
@@ -64,4 +72,9 @@ public class Order {
     @UpdateTimestamp
     @Column(name = "updated_at", columnDefinition = "DATETIME", nullable = false)
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreateEntity() {
+        this.email = TokenUtils.getAttribute("email");
+    }
 }

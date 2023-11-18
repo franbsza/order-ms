@@ -41,4 +41,6 @@ public class OrderDto {
     //vehicle
     private Long vehicleId;
     private String vehicleName;
+
+    private String email;
 }

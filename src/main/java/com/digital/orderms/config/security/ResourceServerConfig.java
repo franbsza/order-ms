@@ -18,7 +18,15 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     public void configure(final HttpSecurity http) throws Exception {
         http
                 .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
-                .authorizeRequests(authz -> authz.antMatchers("/api/**").authenticated())
+                .csrf().disable()
+                .authorizeRequests(r -> r.antMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
+                                .permitAll())
+                .authorizeRequests(authz -> authz
+                                .antMatchers("/api/**")
+                                .authenticated())
                 .oauth2ResourceServer()
                 .jwt().jwtAuthenticationConverter(keycloakJwtAuthenticationConverter);
     }

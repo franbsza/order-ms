@@ -7,4 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface OrderRepository extends PagingAndSortingRepository<Order, Long> {
     Page<Order> findAll(Pageable pageable);
+
+    Page<Order> findByEmail(Pageable pageable, String email);
 }

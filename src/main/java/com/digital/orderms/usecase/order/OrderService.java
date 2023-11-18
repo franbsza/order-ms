@@ -36,14 +36,16 @@ public class OrderService {
             throw new IllegalArgumentException("Vehicle is not protected");
         }
         Order order = mapper.mappingOrderRequestToOrder(request);
-
         return mapper.mappingOrderToOrderResponse(orderRepository.save(order));
     }
 
-    public OrderListResponse findAll(int page, int size){
+    public OrderListResponse find(int page, int size, String email) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Order> ordersPage = orderRepository.findAll(pageable);
+        Page<Order> ordersPage = email != null ?
+                orderRepository.findByEmail(pageable, email) :
+                orderRepository.findAll(pageable);
+
         List<OrderDto> orderDtoList = ordersPage.getContent().stream()
                 .map(mapper::mappingOrderToOrderDto)
                 .collect(Collectors.toList());

@@ -39,9 +39,10 @@ public class OrderController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     @GetMapping
-    public ResponseEntity<OrderListResponse> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
-                                                     @RequestParam(value = "per_page", required = false, defaultValue = "10") Integer size){
-        return ResponseEntity.ok(service.findAll(page, size));
+    public ResponseEntity<OrderListResponse> find(@RequestParam(required = false, defaultValue = "0") Integer page,
+                                                 @RequestParam(value = "per_page", required = false, defaultValue = "10") Integer size,
+                                                 @RequestParam(value = "email", required = false) String email){
+        return ResponseEntity.ok(service.find(page, size, email));
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")
