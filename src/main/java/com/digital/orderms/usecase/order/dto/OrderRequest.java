@@ -1,7 +1,8 @@
 package com.digital.orderms.usecase.order.dto;
 
-import com.digital.orderms.domain.OrderStatus;
-import com.digital.orderms.domain.Period;
+import com.digital.orderms.enums.Period;
+import com.digital.orderms.usecase.customer.dto.AddressDto;
+import com.digital.orderms.usecase.vehicle.dto.VehicleDto;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,9 +18,12 @@ import java.time.ZonedDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderCreateRequest {
+public class OrderRequest {
+
+    private Long id;
+
     @Hidden
-    private OrderStatus orderStatus;
+    private String orderStatus;
 
     private String description;
 
@@ -31,11 +35,11 @@ public class OrderCreateRequest {
     private ZonedDateTime dateTime;
 
     @NotNull
+    private AddressDto address;
+
+    @NotNull
     private Long serviceId;
 
     @NotNull
-    private Long addressId;
-
-    @NotNull
-    private Long vehicleId;
+    private VehicleDto vehicle;
 }

@@ -1,7 +1,7 @@
 package com.digital.orderms.usecase.order.dto;
 
-import com.digital.orderms.domain.OrderStatus;
-import com.digital.orderms.domain.Period;
+import com.digital.orderms.enums.OrderStatus;
+import com.digital.orderms.enums.Period;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

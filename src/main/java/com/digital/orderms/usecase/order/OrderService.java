@@ -6,7 +6,7 @@ import com.digital.orderms.mappers.OrderEntityMapper;
 import com.digital.orderms.repository.OrderRepository;
 import com.digital.orderms.repository.VehicleRepository;
 import com.digital.orderms.usecase.common.PageControl;
-import com.digital.orderms.usecase.order.dto.OrderCreateRequest;
+import com.digital.orderms.usecase.order.dto.OrderRequest;
 import com.digital.orderms.usecase.order.dto.OrderCreateResponse;
 import com.digital.orderms.usecase.order.dto.OrderDto;
 import com.digital.orderms.usecase.order.dto.OrderListResponse;
@@ -27,15 +27,18 @@ public class OrderService {
     private final VehicleRepository vehicleRepository;
     private final OrderEntityMapper mapper;
 
-    public OrderCreateResponse create(OrderCreateRequest request) {
+    public OrderCreateResponse create(OrderRequest request) {
+        isProtected(request.getVehicle().getId());
+        Order order = mapper.mappingCreateOrderRequestToOrder(request);
+        return mapper.mappingOrderToOrderResponse(orderRepository.save(order));
+    }
 
-        Vehicle vehicle = vehicleRepository.findById(request.getVehicleId()).orElseThrow(
-                () -> new IllegalArgumentException("Vehicle not found")
-        );
-        if(Boolean.FALSE.equals(vehicle.getIsProtected())){
-            throw new IllegalArgumentException("Vehicle is not protected");
-        }
-        Order order = mapper.mappingOrderRequestToOrder(request);
+    public OrderCreateResponse update(OrderRequest request, Long id) {
+        isProtected(request.getVehicle().getId());
+        Order orderResponse = orderRepository.findById(request.getId()).orElseThrow(
+                () -> new IllegalArgumentException("Order not found id: " + id));
+
+        Order order = mapper.mappingUpdateOrderRequestToOrder(request, id, orderResponse);
         return mapper.mappingOrderToOrderResponse(orderRepository.save(order));
     }
 
@@ -63,5 +66,14 @@ public class OrderService {
                 () -> new IllegalArgumentException("Entity not found id: " + id)
         );
         return mapper.mappingOrderToOrderDto(order);
+    }
+
+    private void isProtected(Long id){
+        Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Vehicle not found")
+        );
+        if(Boolean.FALSE.equals(vehicle.getIsProtected())){
+            throw new IllegalArgumentException("Vehicle is not protected");
+        }
     }
 }

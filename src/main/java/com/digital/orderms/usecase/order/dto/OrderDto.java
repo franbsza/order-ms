@@ -1,7 +1,10 @@
 package com.digital.orderms.usecase.order.dto;
 
-import com.digital.orderms.domain.OrderStatus;
-import com.digital.orderms.domain.Period;
+import com.digital.orderms.enums.OrderStatus;
+import com.digital.orderms.enums.Period;
+import com.digital.orderms.usecase.customer.dto.AddressDto;
+import com.digital.orderms.usecase.vehicle.dto.VehicleDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,20 +19,14 @@ import java.time.ZonedDateTime;
 public class OrderDto {
 
     private Long id;
-    private OrderStatus orderStatus;
+    private String orderStatus;
 
     //slot
     private Period period;
     private ZonedDateTime dateTime;
 
     //address
-    private Long addressId;
-    private String neighborhood;
-    private String street;
-    private String number;
-    private String city;
-    private String state;
-    private String zipCode;
+    private AddressDto address;
 
     //service
     private Long serviceId;
@@ -39,8 +36,7 @@ public class OrderDto {
     private String expertTechnicianName;
 
     //vehicle
-    private Long vehicleId;
-    private String vehicleName;
+    private VehicleDto vehicle;
 
     private String email;
 }

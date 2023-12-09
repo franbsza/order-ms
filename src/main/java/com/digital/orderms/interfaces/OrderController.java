@@ -1,7 +1,7 @@
 package com.digital.orderms.interfaces;
 
 import com.digital.orderms.usecase.order.OrderService;
-import com.digital.orderms.usecase.order.dto.OrderCreateRequest;
+import com.digital.orderms.usecase.order.dto.OrderRequest;
 import com.digital.orderms.usecase.order.dto.OrderCreateResponse;
 import com.digital.orderms.usecase.order.dto.OrderDto;
 import com.digital.orderms.usecase.order.dto.OrderListResponse;
@@ -33,8 +33,24 @@ public class OrderController {
                     content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = Error.class)) })})
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<OrderCreateResponse> create(@RequestBody OrderCreateRequest order) {
+    public ResponseEntity<OrderCreateResponse> create(@RequestBody OrderRequest order) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(order));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @Operation(summary = "Update order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The order was updated",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderCreateResponse.class)) }),
+            @ApiResponse(responseCode = "400", description = "The order contains invalid parameters.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Error.class)) })})
+    @PutMapping(value="/{id}" , consumes = "application/json")
+    public ResponseEntity<OrderCreateResponse> update(@RequestBody OrderRequest order,
+                                                     @PathVariable("id") Long id) {
+        OrderCreateResponse response =  service.update(order, id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")
@@ -42,7 +58,8 @@ public class OrderController {
     public ResponseEntity<OrderListResponse> find(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                  @RequestParam(value = "per_page", required = false, defaultValue = "10") Integer size,
                                                  @RequestParam(value = "email", required = false) String email){
-        return ResponseEntity.ok(service.find(page, size, email));
+        OrderListResponse response = service.find(page, size, email);
+        return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")

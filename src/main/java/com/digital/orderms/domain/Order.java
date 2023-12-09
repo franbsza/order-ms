@@ -1,5 +1,6 @@
 package com.digital.orderms.domain;
 
+import com.digital.orderms.enums.OrderStatus;
 import com.digital.orderms.utils.TokenUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,11 +43,11 @@ public class Order {
     @JoinColumn(name = "slot_id", referencedColumnName = "id", nullable = false)
     private Slot slot;
 
-    @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = false)
     private Service service;
 
-    @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
 
@@ -54,7 +55,7 @@ public class Order {
     @JoinColumn(name = "expert_technician_id", referencedColumnName = "id")
     private ExpertTechnician expertTechnician;
 
-    @ManyToOne(fetch = FetchType.LAZY ,cascade=CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY , cascade=CascadeType.ALL)
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     private Vehicle vehicle;
 
