@@ -10,5 +10,5 @@ import org.mapstruct.Mapping;
 public interface VehicleEntityMapper {
 
     @Mapping(target = "name" , source = "vehicle", qualifiedByName = "setVehicleName")
-    VehicleDto mappingOrderToOrderDto(final Vehicle vehicle);
+    VehicleDto mappingVehicleToDto(final Vehicle vehicle);
 }

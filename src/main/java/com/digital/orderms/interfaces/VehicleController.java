@@ -20,7 +20,8 @@ public class VehicleController {
     @GetMapping
     public ResponseEntity<VehicleListResponse> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                        @RequestParam(value = "per_page", required = false, defaultValue = "10") Integer size){
-        return ResponseEntity.ok(service.findAll(page, size));
+        VehicleListResponse response = service.findAll(page, size);
+        return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")

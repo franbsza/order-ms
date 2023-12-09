@@ -44,13 +44,14 @@ public class Vehicle {
     @NotNull
     private String renavam;
 
+    @Column(name = "is_protected", columnDefinition = "boolean default true")
     private Boolean isProtected;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER ,cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY , cascade=CascadeType.ALL)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
-    @OneToMany(mappedBy = "vehicle")
+    @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Order> order;
 }

@@ -27,7 +27,7 @@ public class VehicleService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Vehicle> vehiclePage = repository.findAll(pageable);
         List<VehicleDto> orderDtoList = vehiclePage.getContent().stream()
-                .map(mapper::mappingOrderToOrderDto)
+                .map(mapper::mappingVehicleToDto)
                 .collect(Collectors.toList());
 
         return VehicleListResponse.builder()
@@ -42,6 +42,6 @@ public class VehicleService {
         Vehicle vehicle = repository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("Entity not found id: " + id)
         );
-        return mapper.mappingOrderToOrderDto(vehicle);
+        return mapper.mappingVehicleToDto(vehicle);
     }
 }

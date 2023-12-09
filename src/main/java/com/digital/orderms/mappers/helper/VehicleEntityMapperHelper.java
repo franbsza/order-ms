@@ -12,9 +12,9 @@ public class VehicleEntityMapperHelper {
     public String setVehicleName(final Vehicle vehicle) {
         if(vehicle == null) return null;
         String vehicleName = "";
-        if(vehicle.getBrand() != null || !vehicle.getBrand().isBlank())
+        if(vehicle.getBrand() != null)
             vehicleName = vehicleName + vehicle.getBrand();
-        if(vehicle.getModel() != null || !vehicle.getModel().isBlank())
+        if(vehicle.getModel() != null)
             vehicleName = vehicleName + " "+ vehicle.getModel();
         return vehicleName;
     }
