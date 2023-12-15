@@ -22,6 +22,12 @@ public class ExpertTechnician {
     @Column(name = "id")
     private Long id;
 
+    private String documentNumber;
+
+    private Boolean isPartner;
+
+    private String description;
+
     @NotNull
     private Boolean isActive;
 
@@ -33,12 +39,10 @@ public class ExpertTechnician {
     private String email;
 
     @NotNull
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "personal_address_id", referencedColumnName = "id", nullable = false)
     private Address personalAddress;
 
     @NotNull
     private String phone;
-
-    @OneToOne
-    private BaseAddress baseAddress;
 }

@@ -1,5 +1,6 @@
 package com.digital.orderms.domain;
 
+import com.digital.orderms.enums.Period;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

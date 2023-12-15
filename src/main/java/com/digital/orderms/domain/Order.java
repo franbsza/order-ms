@@ -51,11 +51,11 @@ public class Order {
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
 
-    @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expert_technician_id", referencedColumnName = "id")
     private ExpertTechnician expertTechnician;
 
-    @ManyToOne(fetch = FetchType.LAZY , cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     private Vehicle vehicle;
 

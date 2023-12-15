@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -16,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "customers")
+@EntityListeners(AuditingEntityListener.class)
 public class Customer {
 
     @Id
@@ -24,14 +29,13 @@ public class Customer {
     private Long id;
 
     @NotNull
-    private String userId;
+    private String status;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private CustomerStatus status;
+    private String firstName;
 
     @NotNull
-    private String name;
+    private String lastName;
 
     @NotNull
     @Email
@@ -40,10 +44,18 @@ public class Customer {
     @NotNull
     private String phone;
 
-    @NotNull
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY ,cascade=CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY , cascade=CascadeType.ALL)
     private List<Vehicle> vehicles;
+
+    @CreationTimestamp
+    @Column(name = "created_at", columnDefinition = "DATETIME", nullable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at", columnDefinition = "DATETIME", nullable = false)
+    private LocalDateTime updatedAt;
 }

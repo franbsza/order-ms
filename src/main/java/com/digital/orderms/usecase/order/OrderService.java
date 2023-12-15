@@ -1,5 +1,6 @@
 package com.digital.orderms.usecase.order;
 
+import com.digital.orderms.domain.ExpertTechnician;
 import com.digital.orderms.domain.Order;
 import com.digital.orderms.domain.Vehicle;
 import com.digital.orderms.mappers.OrderEntityMapper;
@@ -10,6 +11,8 @@ import com.digital.orderms.usecase.order.dto.OrderRequest;
 import com.digital.orderms.usecase.order.dto.OrderCreateResponse;
 import com.digital.orderms.usecase.order.dto.OrderDto;
 import com.digital.orderms.usecase.order.dto.OrderListResponse;
+import com.digital.orderms.usecase.technician.TechnicianService;
+import com.digital.orderms.usecase.vehicle.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,10 +30,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final VehicleRepository vehicleRepository;
     private final OrderEntityMapper mapper;
+    private final TechnicianService technicianService;
 
     public OrderCreateResponse create(OrderRequest request) {
         isProtected(request.getVehicle().getId());
-        Order order = mapper.mappingCreateOrderRequestToOrder(request);
+        ExpertTechnician expertTechnician =  allocateTechnician(request.getAddress().getNeighborhood());
+        Order order = mapper.mappingCreateOrderRequestToOrder(request, expertTechnician);
         return mapper.mappingOrderToOrderResponse(orderRepository.save(order));
     }
 
@@ -75,5 +81,9 @@ public class OrderService {
         if(Boolean.FALSE.equals(vehicle.getIsProtected())){
             throw new IllegalArgumentException("Vehicle is not protected");
         }
+    }
+
+    private ExpertTechnician allocateTechnician(String neighborhood){
+        return technicianService.findOneByRegion(neighborhood);
     }
 }
