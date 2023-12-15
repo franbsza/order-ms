@@ -23,7 +23,7 @@ public class OrderController {
 
     private final OrderService service;
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_STAFF', 'ROLE_ADMIN')")
     @Operation(summary = "Create a new order")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "The order was created",
@@ -37,7 +37,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(order));
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_STAFF', 'ROLE_ADMIN')")
     @Operation(summary = "Update order")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "The order was updated",
@@ -53,7 +53,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_STAFF', 'ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<OrderListResponse> find(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                  @RequestParam(value = "per_page", required = false, defaultValue = "10") Integer size,
@@ -62,7 +62,7 @@ public class OrderController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_STAFF', 'ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> findById(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));

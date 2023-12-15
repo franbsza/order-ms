@@ -1,5 +1,6 @@
 package com.digital.orderms.mappers;
 
+import com.digital.orderms.domain.ExpertTechnician;
 import com.digital.orderms.domain.Order;
 import com.digital.orderms.mappers.helper.OrderEntityMapperHelper;
 import com.digital.orderms.usecase.order.dto.OrderRequest;
@@ -11,13 +12,17 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {OrderEntityMapperHelper.class})
 public interface OrderEntityMapper {
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "service.id", source = "request.serviceId")
     @Mapping(target = "address.id", ignore = true)
     @Mapping(target = "vehicle.id", source = "request.vehicle.id")
     @Mapping(target = "orderStatus", source = "request.orderStatus", qualifiedByName = "setOrderStatus")
     @Mapping(target= "slot.period", source = "request.period")
     @Mapping(target = "slot.dateTime", source = "request.dateTime")
-    Order mappingCreateOrderRequestToOrder(OrderRequest request);
+    @Mapping(target = "expertTechnician.id", source = "expertTechnician.id")
+    @Mapping(target = ".email", ignore = true)
+    @Mapping(target = "description", source = "request.description")
+    Order mappingCreateOrderRequestToOrder(OrderRequest request, ExpertTechnician expertTechnician);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "service.id", source = "request.serviceId")

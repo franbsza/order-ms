@@ -1,17 +1,21 @@
 package com.digital.orderms.usecase.vehicle;
 
+import com.digital.orderms.domain.Customer;
 import com.digital.orderms.domain.Vehicle;
 import com.digital.orderms.mappers.VehicleEntityMapper;
+import com.digital.orderms.repository.CustomerRepository;
 import com.digital.orderms.repository.VehicleRepository;
 import com.digital.orderms.usecase.common.PageControl;
 import com.digital.orderms.usecase.vehicle.dto.VehicleDto;
 import com.digital.orderms.usecase.vehicle.dto.VehicleListResponse;
+import com.digital.orderms.usecase.vehicle.dto.VehicleRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,18 +24,22 @@ import java.util.stream.Collectors;
 public class VehicleService {
 
     private final VehicleRepository repository;
+    private final CustomerRepository customerRepository;
     private final VehicleEntityMapper mapper;
 
-    public VehicleListResponse findAll(int page, int size){
+    public VehicleListResponse findAll(int page, int size, String email) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Vehicle> vehiclePage = repository.findAll(pageable);
-        List<VehicleDto> orderDtoList = vehiclePage.getContent().stream()
+        Page<Vehicle> vehiclePage = email != null ?
+                repository.findByEmail(pageable, email) :
+                repository.findAll(pageable);
+
+        List<VehicleDto> vehicleDtos = vehiclePage.getContent().stream()
                 .map(mapper::mappingVehicleToDto)
                 .collect(Collectors.toList());
 
         return VehicleListResponse.builder()
-                .data(orderDtoList)
+                .data(vehicleDtos)
                 .pageControl(PageControl.builder()
                         .total(vehiclePage.getTotalElements())
                         .build())
@@ -43,5 +51,13 @@ public class VehicleService {
                 () -> new IllegalArgumentException("Entity not found id: " + id)
         );
         return mapper.mappingVehicleToDto(vehicle);
+    }
+
+    public VehicleDto create(VehicleRequest request) {
+        Customer customer = customerRepository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new EntityNotFoundException("Customer not found email: " + request.getEmail())
+        );
+        Vehicle vehicle = mapper.mappingVehicleRequestToVehicle(request, customer);
+        return mapper.mappingVehicleToDto(repository.save(vehicle));
     }
 }

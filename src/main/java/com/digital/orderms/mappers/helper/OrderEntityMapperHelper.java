@@ -25,6 +25,7 @@ public class OrderEntityMapperHelper {
         if(orderStatus == null) return null;
         return orderStatus.getName();
     }
+
     @Named("setVehicleName")
     public String setVehicleName(final Vehicle vehicle) {
         if(vehicle == null) return null;

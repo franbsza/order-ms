@@ -1,10 +1,8 @@
 package com.digital.orderms.usecase.order.dto;
 
-import com.digital.orderms.enums.OrderStatus;
 import com.digital.orderms.enums.Period;
 import com.digital.orderms.usecase.customer.dto.AddressDto;
 import com.digital.orderms.usecase.vehicle.dto.VehicleDto;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,4 +37,6 @@ public class OrderDto {
     private VehicleDto vehicle;
 
     private String email;
+
+    private String description;
 }
