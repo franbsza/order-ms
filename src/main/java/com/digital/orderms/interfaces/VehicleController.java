@@ -23,7 +23,7 @@ public class VehicleController {
 
     private final VehicleService service;
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_STAFF', 'ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<VehicleListResponse> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                        @RequestParam(value = "per_page", required = false, defaultValue = "10") Integer size,
@@ -32,13 +32,13 @@ public class VehicleController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_STAFF', 'ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<VehicleDto> findById(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_STAFF', 'ROLE_ADMIN')")
     @Operation(summary = "Create a new vehicle")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "The vehicle was created",
@@ -50,5 +50,18 @@ public class VehicleController {
     @PostMapping(consumes = "application/json")
     public ResponseEntity<VehicleDto> create(@RequestBody VehicleRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_STAFF', 'ROLE_ADMIN')")
+    @Operation(summary = "Update vehicle status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The vehicle status was updated"),
+            @ApiResponse(responseCode = "400", description = "The vehicle contains invalid parameters.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Error.class)) })})
+    @PutMapping(value= "/desactivate/{id}")
+    public ResponseEntity<Void> updateStatus(@PathVariable("id") Long id){
+        service.updateStatus(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -4,12 +4,19 @@ import com.digital.orderms.domain.Customer;
 import com.digital.orderms.enums.CustomerStatus;
 import com.digital.orderms.mappers.CustomerEntityMapper;
 import com.digital.orderms.repository.CustomerRepository;
+import com.digital.orderms.usecase.common.PageControl;
+import com.digital.orderms.usecase.customer.dto.CustomerListResponse;
 import com.digital.orderms.usecase.customer.dto.CustomerRequest;
 import com.digital.orderms.usecase.customer.dto.CustomerDto;
 import lombok.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +31,8 @@ public class CustomerService {
     }
 
     public CustomerDto update(CustomerRequest request) {
-        findEntityById(request.getId());
-        Customer customer = mapper.mappingCustomerRequestToCustomer(request);
+        Customer customer = findEntityById(request.getId());
+        customer = mapper.mappingCustomerRequestToCustomer(request);
         return mapper.mappingCustomerToCustomerDto(customerRepository.save(customer));
     }
 
@@ -54,5 +61,24 @@ public class CustomerService {
        Customer customer = customerRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("Customer not found id: " + email));
         return mapper.mappingCustomerToCustomerDto(customer);
+    }
+
+    public CustomerListResponse findAll(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Customer> customerPage =
+                customerRepository.findAll(pageable);
+
+        List<CustomerDto> customerDtos = customerPage
+                .getContent()
+                .stream()
+                .map(mapper::mappingCustomerToCustomerDto)
+                .collect(Collectors.toList());
+
+        return CustomerListResponse.builder()
+                .data(customerDtos)
+                .pageControl(PageControl.builder()
+                        .total(customerPage.getTotalElements())
+                        .build())
+                .build();
     }
 }

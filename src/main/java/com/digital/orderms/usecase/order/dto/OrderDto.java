@@ -39,4 +39,6 @@ public class OrderDto {
     private String email;
 
     private String description;
+
+    private String userName;
 }

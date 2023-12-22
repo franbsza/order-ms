@@ -9,8 +9,8 @@ public enum OrderStatus {
     OPEN("Em aberto"),
     IN_PROGRESS("Em andamento"),
     PENDING("Pendente"),
-    CANCELED("Cancelado"),
-    COMPLETED_SUCCESS("Concluído");
+    CANCELED("Cancelada"),
+    COMPLETED_SUCCESS("Concluída");
 
     private final String name;
 }

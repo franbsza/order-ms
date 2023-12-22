@@ -29,6 +29,7 @@ public class TechnicianService {
     private final TechnicianEntityMapper mapper;
 
     public TechnicianDto create(TechnicianRequest request) {
+        request.setIsActive(true);
         ExpertTechnician expertTechnician = mapper.mappingTechnicianRequestToExpertTechnician(request);
         return mapper.mappingTechnicianToDto(repository.save(expertTechnician));
     }

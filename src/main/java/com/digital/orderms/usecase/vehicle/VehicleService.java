@@ -60,4 +60,13 @@ public class VehicleService {
         Vehicle vehicle = mapper.mappingVehicleRequestToVehicle(request, customer);
         return mapper.mappingVehicleToDto(repository.save(vehicle));
     }
+
+    public void updateStatus(Long id) {
+        Vehicle vehicle = repository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Entity not found id: " + id)
+        );
+        vehicle.setIsActive(!vehicle.getIsActive());
+        vehicle.setIsProtected(!vehicle.getIsActive());
+        repository.save(vehicle);
+    }
 }

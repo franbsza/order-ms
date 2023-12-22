@@ -2,6 +2,7 @@ package com.digital.orderms.interfaces;
 
 import com.digital.orderms.usecase.customer.CustomerService;
 import com.digital.orderms.usecase.customer.dto.CustomerDto;
+import com.digital.orderms.usecase.customer.dto.CustomerListResponse;
 import com.digital.orderms.usecase.customer.dto.CustomerRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -74,5 +75,13 @@ public class CustomerController {
                                                     @PathVariable("status") String status){
         service.updateStatus(id, status);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_STAFF', 'ROLE_ADMIN')")
+    @GetMapping
+    public ResponseEntity<CustomerListResponse> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
+                                                        @RequestParam(value = "per_page", required = false, defaultValue = "10") Integer size){
+        CustomerListResponse response = service.findAll(page, size);
+        return ResponseEntity.ok(response);
     }
 }

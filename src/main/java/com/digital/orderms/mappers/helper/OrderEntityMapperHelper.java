@@ -23,7 +23,7 @@ public class OrderEntityMapperHelper {
     @Named("getOrderStatus")
     public String getOrderStatus(final OrderStatus orderStatus) {
         if(orderStatus == null) return null;
-        return orderStatus.getName();
+        return orderStatus.toString();
     }
 
     @Named("setVehicleName")

@@ -52,7 +52,7 @@ public class Customer {
     private List<Vehicle> vehicles;
 
     @CreationTimestamp
-    @Column(name = "created_at", columnDefinition = "DATETIME", nullable = false)
+    @Column(name = "created_at", columnDefinition = "DATETIME", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp

@@ -17,7 +17,7 @@ public class SecurityController {
     }
 
     @GetMapping(value = "/has-role-user")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_STAFF')")
     public ResponseEntity<Void> isUser() {
         return ResponseEntity.ok().build();
     }

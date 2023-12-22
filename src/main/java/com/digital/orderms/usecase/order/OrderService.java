@@ -43,8 +43,8 @@ public class OrderService {
         isProtected(request.getVehicle().getId());
         Order orderResponse = orderRepository.findById(request.getId()).orElseThrow(
                 () -> new IllegalArgumentException("Order not found id: " + id));
-
-        Order order = mapper.mappingUpdateOrderRequestToOrder(request, id, orderResponse);
+        ExpertTechnician expertTechnician =  allocateTechnician(request.getAddress().getNeighborhood());
+        Order order = mapper.mappingUpdateOrderRequestToOrder(request, id, orderResponse, expertTechnician);
         return mapper.mappingOrderToOrderResponse(orderRepository.save(order));
     }
 

@@ -31,7 +31,7 @@ class CustomerServiceTest {
         Customer customer = mockCustomer();
         CustomerDto customerDto = mockCustomerDto();
 
-        when(mapper.mappingCustomerRequestToCustomer(customerRequest)).thenReturn(customer);
+        //when(mapper.mappingCustomerRequestToCustomer(customerRequest)).thenReturn(customer);
         when(customerRepository.save(customer)).thenReturn(customer);
         when(mapper.mappingCustomerToCustomerDto(customer)).thenReturn(customerDto);
 

@@ -33,7 +33,9 @@ public interface OrderEntityMapper {
     @Mapping(target = "slot.dateTime", source = "request.dateTime")
     @Mapping(target = "description", source = "request.description")
     @Mapping(target = "createdAt", source = "orderResponse.createdAt")
-    Order mappingUpdateOrderRequestToOrder(OrderRequest request, Long id, Order orderResponse);
+    @Mapping(target = "expertTechnician.id", source = "expertTechnician.id")
+    @Mapping(target = "email", source = "orderResponse.email")
+    Order mappingUpdateOrderRequestToOrder(OrderRequest request, Long id, Order orderResponse, ExpertTechnician expertTechnician);
 
     @Mapping(target = "period", source = "order.slot.period")
     @Mapping(target = "dateTime", source = "order.slot.dateTime")

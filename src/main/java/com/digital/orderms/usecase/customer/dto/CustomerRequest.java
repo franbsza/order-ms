@@ -18,4 +18,5 @@ public class CustomerRequest {
     private String email;
     private String phone;
     private AddressDto address;
+    private String status;
 }
